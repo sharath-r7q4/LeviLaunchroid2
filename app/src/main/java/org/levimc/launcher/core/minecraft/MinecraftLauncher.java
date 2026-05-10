@@ -86,20 +86,9 @@ public class MinecraftLauncher {
                 loadingDialog = new LoadingDialog(activity);
                 loadingDialog.show();
             });
-
-            new Thread(() -> {
-                try {
-                    gameManager = GamePackageManager.Companion.getInstance(context.getApplicationContext(), version);
-                    fillIntentWithMcPath(sourceIntent, version);
-                    launchMinecraftActivity(sourceIntent, version, false);
-                } catch (Exception e) {
-                    Log.e(TAG, "Launch failed: " + e.getMessage(), e);
-                    activity.runOnUiThread(() -> {
-                        dismissLoading();
-                        showLaunchErrorOnUi("Launch failed: " + e.getMessage());
-                    });
-                }
-            }).start();
+            gameManager = GamePackageManager.Companion.getInstance(context.getApplicationContext(), version);
+            fillIntentWithMcPath(sourceIntent, version);
+            launchMinecraftActivity(sourceIntent, version, false);
         } catch (Exception e) {
             Log.e(TAG, "Launch failed: " + e.getMessage(), e);
             dismissLoading();
@@ -140,7 +129,11 @@ public class MinecraftLauncher {
 
                 if (shouldLoadHttpClient(version)) {
                     gameManager.loadLibrary("c++_shared");
-                    gameManager.loadLibrary("HttpClient.Android");
+                    if (gameManager.loadLibrary("HttpClient.Android")) {
+                        Log.d(TAG, "Loaded Minecraft's libHttpClient.Android.so");
+                    } else {
+                        Log.w(TAG, "HttpClient.Android not found in extracted libs");
+                    }
                 }
 
                 if (shouldLoadMaesdk(version)) {
@@ -160,9 +153,7 @@ public class MinecraftLauncher {
                     gameManager.loadLibrary("fmod");
                     gameManager.loadLibrary("MediaDecoders_Android");
                     gameManager.loadLibrary("minecraftpe");
-                    gameManager.loadLibrary("gxcore");
                 }
-
                 ModNativeLoader.loadEnabledSoMods(ModManager.getInstance(), context.getCacheDir());
 
                 activity.runOnUiThread(() -> {
