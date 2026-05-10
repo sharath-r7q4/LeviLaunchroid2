@@ -52,26 +52,9 @@ jobs:
           CF_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
         run: echo "curseforge.api_key=${CF_API_KEY}" >> local.properties
 
-      - name: Build Debug, Beta and Unsigned Release APKs
-        run: ./gradlew assembleDebug assembleBeta assembleRelease
+      - name: Build Unsigned Release APK
+        run: ./gradlew assembleRelease
 
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: LeviLauncher-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
-
-      - name: Upload Unsigned Release APK
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: LeviLauncher-release-unsigned-apk
-          path: app/build/outputs/apk/release/*-unsigned.apk
-
-      - name: Upload Beta APK
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: LeviLauncher-beta-apk
-          path: app/build/outputs/apk/beta/*.apk
 
       - name: Sign Release APK
         if: startsWith(github.ref, 'refs/tags/')
