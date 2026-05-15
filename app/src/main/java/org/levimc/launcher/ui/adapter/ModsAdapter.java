@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 
 import org.levimc.launcher.R;
 import org.levimc.launcher.core.mods.Mod;
@@ -23,6 +24,7 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
     private OnModEnableChangeListener onModEnableChangeListener;
     private OnModReorderListener onModReorderListener;
     private OnModClickListener onModClickListener;
+    private ItemTouchHelper itemTouchHelper;
 
 
     public interface OnModEnableChangeListener {
@@ -52,6 +54,10 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
 
     public void setOnModClickListener(OnModClickListener listener) {
         this.onModClickListener = listener;
+    }
+
+    public void setItemTouchHelper(ItemTouchHelper itemTouchHelper) {
+        this.itemTouchHelper = itemTouchHelper;
     }
 
     @NonNull
@@ -84,6 +90,15 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
             }
         });
 
+        if (holder.dragHandle != null) {
+            holder.dragHandle.setOnTouchListener((v, event) -> {
+                if (event.getAction() == android.view.MotionEvent.ACTION_DOWN && itemTouchHelper != null) {
+                    itemTouchHelper.startDrag(holder);
+                }
+                return false;
+            });
+        }
+
         ViewCompat.setTransitionName(holder.itemView, "mod_card_" + mod.getId());
 
         holder.itemView.setOnClickListener(v -> {
@@ -91,6 +106,11 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
                 onModClickListener.onModClick(mod, position, holder.itemView);
             }
         });
+
+        android.content.Context context = holder.itemView.getContext();
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(context);
+        pm.applyGlassToView(holder.itemView);
+        pm.applyAccentToView(holder.itemView, context);
     }
 
     @Override
@@ -128,7 +148,9 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
             }
         }
         notifyItemMoved(fromPosition, toPosition);
+    }
 
+    public void commitReorder() {
         if (onModReorderListener != null) {
             onModReorderListener.onModsReordered(new ArrayList<>(mods));
         }
@@ -138,13 +160,14 @@ public class ModsAdapter extends RecyclerView.Adapter<ModsAdapter.ModViewHolder>
         TextView name;
         TextView orderText;
         Switch switchBtn;
+        android.widget.ImageView dragHandle;
 
         public ModViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.mod_name);
             orderText = itemView.findViewById(R.id.mod_order);
             switchBtn = itemView.findViewById(R.id.mod_switch);
-            // drag handle exists in layout but not used in adapter logic
+            dragHandle = itemView.findViewById(R.id.drag_handle);
         }
     }
 }

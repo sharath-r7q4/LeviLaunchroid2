@@ -4,10 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <org.levimc.launcher.ui.views.AmoledGlowView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,33 +13,14 @@
         android:paddingTop="16dp"
         android:paddingBottom="24dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/header_background"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <ImageButton
-                android:id="@+id/close_fullscreen_button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="12dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_arrow_down"
-                android:rotation="90"
-                android:tint="@color/on_surface" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/full_mods_title"
-                android:fontFamily="@font/misans"
-                android:textColor="@color/on_surface"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:text="@string/full_mods_title"
+            android:fontFamily="@font/misans"
+            android:textColor="@color/primary"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -130,6 +107,7 @@
         </LinearLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -143,49 +121,49 @@
                 android:orientation="vertical"
                 android:padding="8dp">
 
-                <TextView
-                    android:id="@+id/inbuilt_mods_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/inbuilt_mods_label"
-                    android:textSize="12sp"
-                    android:textColor="@color/on_surface"
-                    android:fontFamily="@font/misans"
-                    android:textStyle="bold"
-                    android:alpha="0.7"
-                    android:paddingHorizontal="8dp"
-                    android:paddingTop="4dp"
-                    android:visibility="gone" />
+            <TextView
+                android:id="@+id/inbuilt_mods_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/inbuilt_mods_label"
+                android:textSize="12sp"
+                android:textColor="@color/on_surface"
+                android:fontFamily="@font/misans"
+                android:textStyle="bold"
+                android:alpha="0.7"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="4dp"
+                android:visibility="gone" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/inbuilt_mods_recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingHorizontal="8dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/inbuilt_mods_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="8dp" />
 
-                <TextView
-                    android:id="@+id/external_mods_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/external_mods_label"
-                    android:textSize="12sp"
-                    android:textColor="@color/on_surface"
-                    android:fontFamily="@font/misans"
-                    android:textStyle="bold"
-                    android:alpha="0.7"
-                    android:paddingHorizontal="8dp"
-                    android:paddingTop="8dp"
-                    android:visibility="gone" />
+            <TextView
+                android:id="@+id/external_mods_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/external_mods_label"
+                android:textSize="12sp"
+                android:textColor="@color/on_surface"
+                android:fontFamily="@font/misans"
+                android:textStyle="bold"
+                android:alpha="0.7"
+                android:paddingHorizontal="8dp"
+                android:paddingTop="8dp"
+                android:visibility="gone" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/mods_recycler_fullscreen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clipToPadding="false"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingHorizontal="8dp" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/mods_recycler_fullscreen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="8dp" />
 
             </LinearLayout>
 

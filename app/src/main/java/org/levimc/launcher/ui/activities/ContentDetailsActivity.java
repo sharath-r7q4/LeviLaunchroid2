@@ -11,7 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -158,8 +158,6 @@ public class ContentDetailsActivity extends BaseActivity {
     }
 
     private void initViews() {
-        View backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(v -> finish());
 
         icon = findViewById(R.id.detail_icon);
         title = findViewById(R.id.detail_title);
@@ -286,6 +284,15 @@ public class ContentDetailsActivity extends BaseActivity {
         params.height = height;
         dialog.getWindow().setAttributes(params);
 
+        org.levimc.launcher.util.PersonalizationManager pm = new org.levimc.launcher.util.PersonalizationManager(this);
+        View dialogRoot = dialog.findViewById(android.R.id.content);
+        if (dialogRoot instanceof android.view.ViewGroup) {
+            android.view.ViewGroup rootGroup = (android.view.ViewGroup) dialogRoot;
+            for (int i = 0; i < rootGroup.getChildCount(); i++) {
+                pm.applyGlassToView(rootGroup.getChildAt(i));
+            }
+        }
+
         RecyclerView recycler = dialog.findViewById(R.id.recycler_files);
         View btnClose = dialog.findViewById(R.id.btn_close);
 
@@ -372,7 +379,7 @@ public class ContentDetailsActivity extends BaseActivity {
         File behaviorPacksDir = getPackDirectory("behavior_packs");
         File skinPacksDir = getPackDirectory("skin_packs");
 
-        contentImporter.importContent(uri, resourcePacksDir, behaviorPacksDir, skinPacksDir, worldsDir,
+        contentImporter.importContent(java.util.Collections.singletonList(uri), resourcePacksDir, behaviorPacksDir, skinPacksDir, worldsDir,
             new ContentImporter.ImportCallback() {
                 @Override
                 public void onSuccess(String message) {
