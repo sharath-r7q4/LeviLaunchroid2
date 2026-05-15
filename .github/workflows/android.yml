@@ -79,7 +79,7 @@ jobs:
       - name: Release APK to GitHub Releases
         uses: softprops/action-gh-release@v3
         with:
-          repository: sharath-r7q4/revanced-apks
+          repository: sharath-5br2r/patched-apks-builder
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           files: LeviLauncher-release.apk
           tag_name: LeviLauncher
